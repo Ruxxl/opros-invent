@@ -1,0 +1,155 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Опрос по автоперемещению</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow column, test cards then feedback, sticky-free, form-first */
+:root{--bg:#f6f8f7;--surface:#ffffff;--fg:#17211c;--muted:#5d6b64;--line:#dbe3df;--accent:#1b7f4b;--accent-fg:#ffffff;--ok:#1b7f4b;--okbg:#e4f3ea;--bad:#b3392f;--badbg:#fbe9e7;--font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101613;--surface:#18201c;--fg:#e8efeb;--muted:#9aa9a1;--line:#2b3731;--accent:#4cc486;--accent-fg:#0c1a12;--ok:#5ad29a;--okbg:#17301f;--bad:#f0877d;--badbg:#3a1f1c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101613;--surface:#18201c;--fg:#e8efeb;--muted:#9aa9a1;--line:#2b3731;--accent:#4cc486;--accent-fg:#0c1a12;--ok:#5ad29a;--okbg:#17301f;--bad:#f0877d;--badbg:#3a1f1c;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font-size:26px;line-height:1.2;margin:0;text-wrap:balance}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:16px 0 0}
+.lead{color:var(--muted);margin:6px 0 0}
+fieldset{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:16px;margin:0;min-width:0}
+legend{padding:0;font-weight:600;font-size:16px;float:left;width:100%;margin-bottom:10px}
+legend+*{clear:both}
+label.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+label.opt:hover{background:var(--bg)}
+input[type=radio]{margin-top:5px;accent-color:var(--accent)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.expl{margin:8px 0 0;padding:10px 12px;border-radius:8px;background:var(--bg);color:var(--muted);font-size:14px}
+textarea,select,input[type=text]{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+textarea{min-height:84px;resize:vertical}
+.scale{display:flex;gap:8px;flex-wrap:wrap}
+.scale label{flex:1 1 52px;text-align:center;border:1px solid var(--line);border-radius:8px;padding:10px 0;cursor:pointer;background:var(--bg)}
+.scale input{position:absolute;opacity:0}
+.scale label:has(input:checked){background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:600}
+.scale label:has(input:focus-visible),input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit;font-weight:600;background:var(--accent);color:var(--accent-fg);border:0;border-radius:10px;padding:14px 20px;cursor:pointer}
+button[disabled]{opacity:.55;cursor:default}
+.hint{font-size:14px;color:var(--muted)}
+.f{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;font-weight:500;font-size:14px}
+.f input{font-weight:400;font-size:16px}
+#result{border:1px solid var(--ok);background:var(--okbg);border-radius:10px;padding:16px}
+#result b{font-size:20px}
+.err{color:var(--bad);font-size:14px}
+</style>
+
+<main>
+  <header>
+    <h1>Автоперемещение при инвентаризации ТМЗ</h1>
+    <p class="lead">Опрос по инструкции для пользователей ТСД. Около 5 минут. Это не экзамен: правильные ответы покажутся после отправки.</p>
+  </header>
+
+  <section id="whobox">
+    <h2>Сначала о вас</h2>
+    <fieldset>
+      <legend>Заполните данные, затем начните опрос</legend>
+      <label class="f" for="w_last">Фамилия<input type="text" id="w_last" autocomplete="family-name"></label>
+      <label class="f" for="w_first">Имя<input type="text" id="w_first" autocomplete="given-name"></label>
+      <label class="f" for="w_city">Город<input type="text" id="w_city" list="cities" autocomplete="off"></label>
+      <datalist id="cities"><option value="Астана"><option value="Алматы"><option value="Костанай"><option value="Шымкент"><option value="Павлодар"><option value="Кокшетау"><option value="Жезказган"><option value="Караганда"><option value="Актау"></datalist>
+      <label class="f" for="w_shop">Магазин или склад<input type="text" id="w_shop" autocomplete="off" placeholder="Например: Основной склад"></label>
+      <button id="start" type="button">Начать опрос</button>
+      <p id="whomsg" class="err" role="status"></p>
+    </fieldset>
+  </section>
+
+  <div id="survey" hidden>
+  <h2>Часть 1. Проверка понимания</h2>
+  <div id="quiz"></div>
+
+  <h2>Часть 2. Обратная связь</h2>
+  <div id="fb"></div>
+
+  <div>
+    <button id="send" type="button">Отправить ответы</button>
+    <p id="msg" class="hint" role="status"></p>
+  </div>
+  <div id="result" hidden></div>
+  </div>
+</main>
+
+<script>
+const QUIZ=[
+ {q:'Что система понимает, когда вы сканируете QR-код?',o:['Товар находится на витрине','Товар находится на складе','Товар нужно списать'],a:0,e:'QR означает, что товар найден на витрине. Штрихкод (ШК) означает, что товар на складе.'},
+ {q:'Когда нужно включать переключатель «Автоперемещение»?',o:['После завершения инвентаризации','До создания листа сканирования','Включать не нужно, он работает сам'],a:1,e:'Переключатель включается на вкладке «Инвентаризация» до создания листа сканирования.'},
+ {q:'В каком направлении работает автоперемещение?',o:['Со склада на витрину','С витрины на склад','В обе стороны'],a:0,e:'Только «Склад → Витрина». С витрины на склад этой функцией переместить нельзя.'},
+ {q:'Товар стоит на витрине, но ценника с QR у него нет. Что делать?',o:['Отсканировать ШК, система сама поймёт, что товар на витрине','Оформить перемещение вручную после инвентаризации','Пересчитать такие позиции отдельным документом инвентаризации'],a:2,e:'По таким позициям перемещение не создаётся: система не может определить, что товар лежит на витрине.'},
+ {q:'Где можно проверить, что перемещение создано?',o:['На вкладке «Перемещения» в документе инвентаризации','В списке контрагентов','В отчёте по остаткам'],a:0,e:'После сообщения «Создано внутренних перемещений: N» результат виден на вкладке «Перемещения».'}
+];
+const BRANCHES=['Костанай','Шымкент','Павлодар','Кокшетау','Жезказган','Караганда','Актау','Астана','Другой'];
+const FB=[
+ {id:'read',t:'Вы ознакомились с инструкцией?',type:'radio',o:['Да, полностью','Частично','Нет']},
+ {id:'clear',t:'Насколько инструкция понятна? (1 — совсем непонятна, 5 — всё понятно)',type:'scale'},
+ {id:'used',t:'Вы уже проводили инвентаризацию с автоперемещением?',type:'radio',o:['Да','Нет']},
+ {id:'created',t:'Если да, перемещение создалось корректно?',type:'radio',o:['Да, всегда','Иногда возникали ошибки','Нет, не создавалось','Ещё не проводил(а)']},
+ {id:'trouble',t:'Какие трудности возникли?',type:'text',ph:'Например: не нашли переключатель, не создалось перемещение, непонятно, где QR'},
+ {id:'step',t:'Какой шаг инструкции показался непонятным?',type:'select',o:['Всё понятно','Шаг 1. Создать документ','Шаг 2. Включить «Автоперемещение»','Шаг 3. Провести инвентаризацию','Шаг 4. Завершить инвентаризацию','Шаг 5. Создать перемещение','Шаг 6. Сообщение о создании','Шаг 7. Проверить результат']},
+ {id:'improve',t:'Что стоит добавить или улучшить в инструкции?',type:'text',ph:'Свободный ответ'},
+];
+const $=s=>document.querySelector(s);
+const quizEl=$('#quiz'), fbEl=$('#fb');
+function el(tag,attrs,...kids){const e=document.createElement(tag);for(const k in attrs||{}){if(k==='class')e.className=attrs[k];else e[k]=attrs[k]}kids.forEach(x=>e.append(x));return e}
+
+QUIZ.forEach((it,i)=>{
+  const fs=el('fieldset',{id:'q'+i}); fs.append(el('legend',{},(i+1)+'. '+it.q));
+  it.o.forEach((t,j)=>{const id='q'+i+'_'+j;
+    const l=el('label',{class:'opt',htmlFor:id}); l.append(el('input',{type:'radio',name:'q'+i,id,value:j}),el('span',{},t)); fs.append(l)});
+  quizEl.append(fs);
+});
+FB.forEach((it,i)=>{
+  const fs=el('fieldset'); fs.append(el('legend',{},(QUIZ.length+i+1)+'. '+it.t));
+  if(it.type==='radio'){it.o.forEach((t,j)=>{const id=it.id+'_'+j;const l=el('label',{class:'opt',htmlFor:id});l.append(el('input',{type:'radio',name:it.id,id,value:t}),el('span',{},t));fs.append(l)})}
+  if(it.type==='scale'){const d=el('div',{class:'scale'});for(let n=1;n<=5;n++){const id=it.id+'_'+n;const l=el('label',{htmlFor:id});l.append(el('input',{type:'radio',name:it.id,id,value:n}),String(n));d.append(l)}fs.append(d)}
+  if(it.type==='text'){fs.append(el('textarea',{id:it.id,placeholder:it.ph||''}))}
+  if(it.type==='select'){const s=el('select',{id:it.id});s.append(el('option',{value:''},'Выберите'));it.o.forEach(t=>s.append(el('option',{value:t},t)));fs.append(s)}
+  fbEl.append(fs);
+});
+
+const WHO={};
+$('#start').addEventListener('click',()=>{
+  const g=id=>document.getElementById(id).value.trim();
+  const w={last:g('w_last'),first:g('w_first'),city:g('w_city'),shop:g('w_shop')};
+  if(Object.values(w).some(v=>!v)){$('#whomsg').textContent='Заполните все четыре поля.';return}
+  Object.assign(WHO,w);
+  ['w_last','w_first','w_city','w_shop'].forEach(id=>document.getElementById(id).disabled=true);
+  $('#start').hidden=true;$('#whomsg').textContent='';
+  $('#survey').hidden=false;
+  $('#survey').scrollIntoView({behavior:'smooth',block:'start'});
+});
+let db=null,uid=null,done=false;
+(async()=>{
+  try{const u=await claude.use('user'); uid=u?await u.id():null; db=await claude.use('db');}catch(e){}
+  if(!db||!uid){$('#msg').textContent='Ответы не будут сохранены автору опроса: откройте ссылку под своей учётной записью claude.ai.'}
+})();
+
+function val(name){const c=document.querySelector('input[name="'+name+'"]:checked');return c?c.value:''}
+$('#send').addEventListener('click',async()=>{
+  if(done)return;
+  const msg=$('#msg'); msg.className='hint'; msg.textContent='';
+  const quiz=QUIZ.map((_,i)=>{const v=val('q'+i);return v===''?null:Number(v)});
+  if(quiz.some(v=>v===null)){msg.className='err';msg.textContent='Ответьте на все 5 вопросов первой части.';return}
+  const fb={};FB.forEach(it=>{fb[it.id]=it.type==='text'||it.type==='select'?(document.getElementById(it.id).value||'').trim():val(it.id)});
+  const score=quiz.filter((v,i)=>v===QUIZ[i].a).length;
+  $('#send').disabled=true;
+  let saved=false;
+  if(db&&uid){try{await db.doc('responses/'+uid).set({who:WHO,quiz,score,fb,at:Date.now()});saved=true}catch(e){}}
+  done=true;
+  QUIZ.forEach((it,i)=>{
+    const fs=$('#q'+i);
+    fs.querySelectorAll('input').forEach(x=>x.disabled=true);
+    fs.querySelectorAll('label.opt').forEach((l,j)=>{if(j===it.a)l.classList.add('ok');else if(j===quiz[i])l.classList.add('bad')});
+    fs.append(el('p',{class:'expl'},(quiz[i]===it.a?'Верно. ':'Неверно. ')+it.e));
+  });
+  const r=$('#result');r.hidden=false;
+  r.replaceChildren(el('b',{},'Правильных ответов: '+score+' из '+QUIZ.length),el('p',{class:'hint'},saved?'Ответы сохранены. Спасибо за участие! Разбор вопросов выше.':'Спасибо! Разбор вопросов выше. Сохранить ответы автору не удалось.'));
+  msg.textContent='';
+  r.scrollIntoView({behavior:'smooth',block:'center'});
+});
+</script>
+
+</body></html>
