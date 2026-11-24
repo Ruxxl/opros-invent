@@ -121,11 +121,8 @@ $('#start').addEventListener('click',()=>{
   $('#survey').hidden=false;
   $('#survey').scrollIntoView({behavior:'smooth',block:'start'});
 });
-let db=null,uid=null,done=false;
-(async()=>{
-  try{const u=await claude.use('user'); uid=u?await u.id():null; db=await claude.use('db');}catch(e){}
-  if(!db||!uid){$('#msg').textContent='Ответы не будут сохранены автору опроса: откройте ссылку под своей учётной записью claude.ai.'}
-})();
+const ENDPOINT='https://script.google.com/macros/s/AKfycbxveNXqkJm5TqXRFu2asP3bBxaZQxw4W27hOgrafutsV5LWfpQsk_37d7bpJf_Ss45Ezw/exec';
+let done=false;
 
 function val(name){const c=document.querySelector('input[name="'+name+'"]:checked');return c?c.value:''}
 $('#send').addEventListener('click',async()=>{
@@ -137,7 +134,7 @@ $('#send').addEventListener('click',async()=>{
   const score=quiz.filter((v,i)=>v===QUIZ[i].a).length;
   $('#send').disabled=true;
   let saved=false;
-  if(db&&uid){try{await db.doc('responses/'+uid).set({who:WHO,quiz,score,fb,at:Date.now()});saved=true}catch(e){}}
+  try{await fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({who:WHO,quiz,score,fb})});saved=true}catch(e){}
   done=true;
   QUIZ.forEach((it,i)=>{
     const fs=$('#q'+i);
